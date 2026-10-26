@@ -32,7 +32,7 @@
 - `title`, `description`, canonical, Open Graph і Twitter-картка (`img/og.png`, 1200×630).
 - JSON-LD: Organization, WebSite, Product з Offer (`InStock`), FAQPage.
 - `robots.txt`, `sitemap.xml`, `site.webmanifest`, favicon SVG.
-- Шрифти віддаються з власного домену з довгим кешем (`vercel.json`).
+- Шрифти віддаються з власного домену з довгим кешем, а CSS і JS — з перевіркою свіжості при кожному заході (`vercel.json`), щоб після оновлення ніхто не отримав стару версію скриптів.
 
 **Якщо підключаєте свій домен** — замініть `https://zagotovky-na-misyats.vercel.app` на нього в `index.html`, `privacy.html`, `robots.txt` і `sitemap.xml`.
 
