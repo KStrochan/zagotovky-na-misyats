@@ -1,6 +1,7 @@
 // Two-step checkout without online acquiring:
-// 1) the buyer leaves a contact → /api/order notifies Telegram and returns the payee card (env PAY_CARD);
-// 2) the buyer pays by card-to-card transfer in EasyPay and taps «Я оплатив» → Telegram gets a second note.
+// 1) the buyer leaves an email → /api/order returns the payee card (env PAY_CARD);
+// 2) the buyer pays by card-to-card transfer in EasyPay and taps «Я оплатив» → the files are emailed
+//    (or, with DELIVERY=manual, the owner gets a confirm link first).
 // If PAY_CARD is not set on the server, the form behaves as a plain pre-order.
 
 const EASYPAY_URL = 'https://easypay.ua/ua';
@@ -20,7 +21,7 @@ async function post(payload) {
  * @returns {Promise<'pay'|'lead'>}  'pay' when payment details were shown, 'lead' for a plain pre-order
  */
 export async function checkout(form, o) {
-  const j = await post({ site: o.site, product: o.product, name: o.name, contact: o.contact, comment: o.comment || '', stage: 'lead' });
+  const j = await post({ site: o.site, product: o.product, name: o.name, contact: o.contact, comment: o.comment || '', lang: 'uk', stage: 'lead' });
   if (!j.card) return 'lead';
   const card = fmtCard(j.card);
   form.classList.add('paying');
@@ -37,7 +38,7 @@ export async function checkout(form, o) {
     <a class="btn" href="${EASYPAY_URL}" target="_blank" rel="noopener">Оплатити через EasyPay</a>
     <button type="button" class="btn line-btn" data-paid>Я оплатив(ла)</button>
     <div class="status" role="status" aria-live="polite"></div>
-    <p class="note">Комісія EasyPay — 1% + 5 грн. Можна також поповнити картку готівкою в терміналі EasyPay. Після оплати натисніть «Я оплатив(ла)» — перевіримо платіж і надішлемо файл на ${esc(o.contact)}.</p>`;
+    <p class="note">Комісія EasyPay — 1% + 5 грн. Можна також поповнити картку готівкою в терміналі EasyPay. Після оплати натисніть «Я оплатив(ла)» — лист із файлом прийде на ${esc(o.contact)}.</p>`;
   const st = form.querySelector('.status');
   form.querySelector('[data-copy]').addEventListener('click', async (e) => {
     try { await navigator.clipboard.writeText(card.replace(/\s/g, '')); e.target.textContent = 'Скопійовано'; }
@@ -46,9 +47,11 @@ export async function checkout(form, o) {
   form.querySelector('[data-paid]').addEventListener('click', async (e) => {
     e.target.disabled = true; st.className = 'status'; st.textContent = 'Надсилаємо…';
     try {
-      await post({ site: o.site, product: o.product, name: o.name, contact: o.contact, stage: 'paid' });
-      st.className = 'status ok'; st.textContent = 'Дякуємо! Перевіримо оплату і надішлемо файл протягом дня.';
-      if (o.onDone) o.onDone();
+      const r = await post({ site: o.site, product: o.product, name: o.name, contact: o.contact, lang: 'uk', stage: 'paid' });
+      st.className = 'status ok';
+      st.textContent = r.delivered ? `Готово! Лист із файлом уже йде на ${o.contact}. Якщо не бачите його за кілька хвилин, перевірте «Спам».`
+        : `Дякуємо! Перевіримо оплату і надішлемо файл на ${o.contact} протягом дня.`;
+      if (o.onDone) o.onDone(!!r.delivered);
     } catch {
       e.target.disabled = false; st.className = 'status err'; st.textContent = 'Не вдалося надіслати. Спробуйте ще раз за хвилину.';
     }

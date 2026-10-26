@@ -32,5 +32,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/order.js": {
+      "includeFiles": "api/_files/**"
+    }
+  }
 }
