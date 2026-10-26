@@ -194,3 +194,18 @@ footer a { text-decoration: none; } footer a:hover { text-decoration: underline;
   .hero .ledger, .hero .weeks-ui { justify-self: stretch; max-width: none; }
   .hero .cap { bottom: auto; }
 }
+
+/* ---------- payment step (EasyPay card transfer) ---------- */
+.order-line { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+.order-line b { font-family: var(--display); font-size: 22px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pay-step { font-family: var(--mono, monospace); font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.pay-how { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.pay-card { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 14px 16px; border: 1.5px dashed var(--accent); border-radius: 14px; background: var(--paper); }
+.pay-label { font-size: 13px; color: var(--muted); }
+.pay-card [data-copy] { grid-column: 2; grid-row: 1; }
+.pay-num { grid-column: 1 / -1; font-family: var(--mono, monospace); font-size: clamp(17px, 4.8vw, 22px); letter-spacing: .03em; font-variant-numeric: tabular-nums; user-select: all; white-space: nowrap; }
+.btn.sm { padding: 10px 14px; font-size: 14px; }
+.btn.ghost-dark { background: transparent; color: var(--ink); border: 1.5px solid var(--line); box-shadow: none; }
+.btn.line-btn { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); box-shadow: none; }
+form.paying .btn { width: 100%; }
+form.paying .pay-card .btn { width: auto; }

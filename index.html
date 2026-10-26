@@ -30,7 +30,7 @@
     { "@type": "Organization", "@id": "https://zagotovky-na-misyats.vercel.app/#org", "name": "Заготовки на місяць", "url": "https://zagotovky-na-misyats.vercel.app/", "logo": "https://zagotovky-na-misyats.vercel.app/img/favicon.svg" },
     { "@type": "WebSite", "name": "Заготовки на місяць", "url": "https://zagotovky-na-misyats.vercel.app/", "inLanguage": "uk" },
     { "@type": "Product", "name": "Гайд «Морозилка на місяць»", "description": "PDF на 18 сторінок: 20 рецептів заготовок, 4 списки покупок, правила заморозки і таблиця «Що в морозилці».", "brand": { "@id": "https://zagotovky-na-misyats.vercel.app/#org" }, "image": "https://zagotovky-na-misyats.vercel.app/img/og.png",
-      "offers": { "@type": "Offer", "price": "199", "priceCurrency": "UAH", "availability": "https://schema.org/PreOrder", "url": "https://zagotovky-na-misyats.vercel.app/#order" } },
+      "offers": { "@type": "Offer", "price": "199", "priceCurrency": "UAH", "availability": "https://schema.org/InStock", "url": "https://zagotovky-na-misyats.vercel.app/#order" } },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "Потрібен вакууматор?", "acceptedAnswer": { "@type": "Answer", "text": "Ні. Звичайні пакети з застібкою і контейнери підходять. Вакууматор лише краще захищає від сухих країв." } },
       { "@type": "Question", "name": "На скільки людей розраховано?", "acceptedAnswer": { "@type": "Answer", "text": "На сім'ю з 3–4 людей. Для двох беріть половину кількостей зі списку покупок." } },
@@ -142,13 +142,13 @@
       <div>
         <div class="kicker">замовлення</div>
         <h2 class="title">Отримати гайд за 199 грн</h2>
-        <p class="lead">PDF на 18 сторінок, читається з телефона і друкується на A4. Це менше 3 грн за кожну з ~70 порцій. Залиште контакт — надішлемо реквізити і файл.</p>
+        <p class="lead">PDF на 18 сторінок, читається з телефона і друкується на A4. Це менше 3 грн за кожну з ~70 порцій. Залиште контакт, оплатіть через EasyPay — і ми надішлемо файл у Telegram або на телефон.</p>
       </div>
       <form id="orderForm" novalidate>
         <input type="hidden" name="product" value="Морозилка на місяць — 199 грн">
         <label for="name">Ім'я<input id="name" name="name" autocomplete="name" required></label>
         <label for="contact">Telegram або телефон<input id="contact" name="contact" required placeholder="@username або +380…" autocomplete="tel"></label>
-        <button class="btn" type="submit">Хочу гайд</button>
+        <button class="btn" type="submit">Перейти до оплати</button>
         <div class="status" id="status" role="status" aria-live="polite"></div>
         <p class="note">Натискаючи кнопку, ви погоджуєтесь з <a href="privacy.html">політикою конфіденційності</a>.</p>
       </form>
@@ -167,7 +167,7 @@
 </main>
 
 <footer>
-  <div class="wrap"><span>© 2026 Заготовки на місяць</span><span><a href="privacy.html">Політика конфіденційності</a> · Передзамовлення, оплата після запуску</span></div>
+  <div class="wrap"><span>© 2026 Заготовки на місяць</span><span><a href="privacy.html">Політика конфіденційності</a> · Оплата через EasyPay</span></div>
 </footer>
 
 <script type="module" src="assets/js/main.js"></script>
