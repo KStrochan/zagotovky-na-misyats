@@ -30,7 +30,7 @@
     { "@type": "Organization", "@id": "https://zagotovky-na-misyats.vercel.app/#org", "name": "Заготовки на місяць", "url": "https://zagotovky-na-misyats.vercel.app/", "logo": "https://zagotovky-na-misyats.vercel.app/img/favicon.svg" },
     { "@type": "WebSite", "name": "Заготовки на місяць", "url": "https://zagotovky-na-misyats.vercel.app/", "inLanguage": "uk" },
     { "@type": "Product", "name": "Гайд «Морозилка на місяць»", "description": "PDF на 18 сторінок: 20 рецептів заготовок, 4 списки покупок, правила заморозки і таблиця «Що в морозилці».", "brand": { "@id": "https://zagotovky-na-misyats.vercel.app/#org" }, "image": "https://zagotovky-na-misyats.vercel.app/img/og.png",
-      "offers": { "@type": "Offer", "price": "199", "priceCurrency": "UAH", "availability": "https://schema.org/InStock", "url": "https://zagotovky-na-misyats.vercel.app/#order" } },
+      "offers": { "@type": "Offer", "price": "199", "priceCurrency": "UAH", "priceValidUntil": "2026-11-02", "availability": "https://schema.org/InStock", "url": "https://zagotovky-na-misyats.vercel.app/#order" } },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "Потрібен вакууматор?", "acceptedAnswer": { "@type": "Answer", "text": "Ні. Звичайні пакети з застібкою і контейнери підходять. Вакууматор лише краще захищає від сухих країв." } },
       { "@type": "Question", "name": "На скільки людей розраховано?", "acceptedAnswer": { "@type": "Answer", "text": "На сім'ю з 3–4 людей. Для двох беріть половину кількостей зі списку покупок." } },
@@ -41,10 +41,11 @@
 </script>
 <!-- Meta Pixel: встав сюди код пікселя з Events Manager, коли створиш рекламний кабінет -->
 </head>
-<body>
+<body data-promo-until="2026-11-02T23:59:59+02:00" data-price-now="199" data-price-after="299">
 <a class="skip" href="#main">До змісту</a>
 
 <header class="site-header" id="top">
+  <div class="promo-bar" data-promo hidden><span>🔥 Ціна запуску 199 грн — до неділі, 2 листопада</span> <b data-countdown></b></div>
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Заготовки на місяць — на початок">Заготовки <span>на місяць</span></a>
     <nav aria-label="Розділи"><a href="#inside">Що в гайді</a><a href="#how">Як це працює</a><a href="#faq">Питання</a></nav>
@@ -59,8 +60,10 @@
         <div class="eyebrow">гайд «Морозилка на місяць»</div>
         <h1>Вечеря за 20 хвилин. Щодня, цілий місяць</h1>
         <p>Чотири вихідні готуєте по 5 заготовок — і морозилка повна. У будні лише дістаєте й розігріваєте.</p>
-        <div class="price-tag"><b>199 грн</b><span>рецепти, списки покупок і правила заморозки — один PDF</span></div>
+        <div class="price-tag"><b data-p>199 грн</b><span>рецепти, списки покупок і правила заморозки — один PDF</span></div>
         <div class="row"><a class="btn" href="#order">Отримати гайд</a><a class="btn ghost" href="#inside">Що всередині</a></div>
+        <ul class="chips"><li>PDF на пошту одразу після оплати</li><li>20 рецептів і 4 списки покупок</li><li>Для сім'ї з 3–4 людей</li></ul>
+        <p class="promo-line" data-promo hidden>Ціна запуску 199 грн діє ще <b data-countdown></b>. З 3 листопада — 299 грн.</p>
       </div>
       <div class="weeks-ui" aria-label="План заповнення морозилки">
         <div class="on" data-week="0"><b>Вихідні 1</b><span>Тісто і фарш</span></div>
@@ -106,6 +109,17 @@
     </div>
   </section>
 
+  <section class="block" id="fit">
+    <div class="wrap">
+      <div class="kicker">Кому підходить</div>
+      <h2 class="title">Гайд саме для вас, якщо ви…</h2>
+      <div class="fit">
+        <div class="fit-col yes"><h3>Так, вам підходить</h3><ul><li>Щовечора думаєте, що приготувати</li><li>Працюєте і не маєте сил на плиту в будні</li><li>Замовляєте доставку частіше, ніж хотілося б</li><li>Маєте морозилку хоча б на дві шухляди</li><li>Хочете, щоб удома завжди була нормальна їжа</li><li>Любите план і готові списки</li></ul></div>
+        <div class="fit-col no"><h3>Мабуть, не підійде, якщо ви</h3><ul><li>Не готові віддати готуванню один вихідний на тиждень</li><li>Шукаєте рецепти для ресторанної подачі</li></ul></div>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="inside">
     <div class="wrap">
       <div class="kicker">що в гайді</div>
@@ -137,16 +151,30 @@
     </div>
   </section>
 
+  <section class="block block-alt" id="recap">
+    <div class="wrap">
+      <div class="kicker">Порахуємо разом</div>
+      <h2 class="title">Усе, що ви отримуєте за один платіж</h2>
+      <div class="recap">
+        <ul class="recap-list"><li><span class="ok" aria-hidden="true">✓</span><div><b>20 рецептів заготовок</b><span>з термінами зберігання і тим, як готувати з морозилки</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>4 списки покупок</b><span>по відділах магазину, кількості пораховані</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>7 правил заморозки</b><span>щоб нічого не злипалось і не псувалось</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>Таблиця «Що в морозилці»</b><span>роздрукуйте і повісьте на дверцята</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>PDF на 18 сторінок</b><span>зручно з телефона і для друку на A4</span></div></li></ul>
+        <div class="recap-buy">
+          <div class="recap-total"><span>Разом</span><b data-p>199 грн</b></div>
+          <p class="promo-line" data-promo hidden>Ціна запуску діє ще <b data-countdown></b>. З 3 листопада — 299 грн.</p>
+          <a class="btn" href="#order">Отримати зараз</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="order">
     <div class="wrap order">
       <div>
         <div class="kicker">замовлення</div>
-        <h2 class="title">Отримати гайд за 199 грн</h2>
-        <p class="lead">PDF на 18 сторінок, читається з телефона і друкується на A4. Це менше 3 грн за кожну з ~70 порцій. Залиште email, оплатіть через EasyPay — і гайд прийде листом одразу після оплати.</p>
+        <h2 class="title" data-p>Отримати гайд за 199 грн</h2>
+        <p class="lead">PDF на 18 сторінок, читається з телефона і друкується на A4. Це менше 5 грн за порцію. Залиште email, оплатіть через EasyPay — і гайд прийде листом одразу після оплати.</p>
       </div>
       <form id="orderForm" novalidate>
-        <input type="hidden" name="product" value="Морозилка на місяць — 199 грн">
-        <label for="name">Ім'я<input id="name" name="name" autocomplete="name" required></label>
+        <input type="hidden" name="product" value="Морозилка на місяць — 199 грн" data-p>
         <label for="contact">Email<input id="contact" name="contact" type="email" inputmode="email" required placeholder="you@gmail.com" autocomplete="email"></label>
         <button class="btn" type="submit">Перейти до оплати</button>
         <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -162,6 +190,14 @@
       <details><summary>Потрібен вакууматор?</summary><p>Ні. Звичайні пакети з застібкою і контейнери підходять. Вакууматор лише краще захищає від сухих країв.</p></details>
       <details><summary>На скільки людей розраховано?</summary><p>На сім'ю з 3–4 людей. Для двох беріть половину кількостей зі списку покупок.</p></details>
       <details><summary>Скільки місця треба в морозилці?</summary><p>Для заготовок одних вихідних вистачає двох шухляд. Соуси й супи заморожуйте пласко — так вони займають утричі менше місця.</p></details>
+    </div>
+  </section>
+  <section class="final" id="final">
+    <div class="wrap">
+      <h2>Одні вихідні — і тиждень вечерь уже в морозилці</h2>
+      <p>Почніть з першого списку покупок у цю суботу.</p>
+      <a class="btn" href="#order" data-p>Хочу гайд за 199 грн</a>
+      <p class="promo-line" data-promo hidden>Ціна запуску ще <b data-countdown></b> · потім 299 грн</p>
     </div>
   </section>
 </main>

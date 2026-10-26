@@ -19,6 +19,9 @@ import nodemailer from 'nodemailer';
 import PRODUCT from './_product.js';
 
 const clean = (s, n = 300) => String(s ?? '').slice(0, n).trim();
+// Launch price until PRODUCT.until, then PRODUCT.priceAfter (the page uses the same dates).
+const price = () => (PRODUCT.until && Date.now() < Date.parse(PRODUCT.until) ? PRODUCT.price : PRODUCT.priceAfter || PRODUCT.price);
+const hi = (name, rest) => (name ? `${name}, ${rest}` : rest.charAt(0).toUpperCase() + rest.slice(1));
 const isEmail = (s) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -65,12 +68,13 @@ function letter(title, bodyHtml) {
 
 async function deliver(t, { name, email }) {
   const attachments = PRODUCT.files.map((f) => ({ filename: f.name, content: decrypt(f.enc) }));
+  const hello = hi(name, 'дякуємо за покупку!');
   await t.sendMail({
     from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`,
     to: email,
     subject: `Ваше замовлення: ${PRODUCT.title}`,
-    text: `${name}, дякуємо за покупку!\n\n${PRODUCT.howTo.join('\n')}\n\nФайли — у вкладеннях до цього листа. Якщо щось не відкривається, просто дайте відповідь на цей лист.`,
-    html: letter(`${name}, дякуємо за покупку!`,
+    text: `${hello}\n\n${PRODUCT.howTo.join('\n')}\n\nФайли — у вкладеннях до цього листа. Якщо щось не відкривається, просто дайте відповідь на цей лист.`,
+    html: letter(hello,
       `<p style="margin:0 0 12px;font-size:15px;line-height:1.55">У вкладеннях — <b>${esc(PRODUCT.title)}</b>.</p>
        <ol style="margin:0 0 14px;padding-left:20px;font-size:15px;line-height:1.6">${PRODUCT.howTo.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
        <p style="margin:0;font-size:14px;color:#5c5c66">Якщо щось не відкривається, просто дайте відповідь на цей лист.</p>`),
@@ -108,7 +112,7 @@ export default async function handler(req, res) {
   const b = req.body || {};
   const name = clean(b.name, 80), email = clean(b.contact, 120).toLowerCase(), stage = clean(b.stage, 10) || 'lead';
   const lang = b.lang === 'en' ? 'en' : 'uk';
-  if (!name || !isEmail(email)) return res.status(400).json({ ok: false, error: 'name and email required' });
+  if (!isEmail(email)) return res.status(400).json({ ok: false, error: 'valid email required' });
   const card = String(process.env.PAY_CARD || '').replace(/\D/g, '');
   const payable = lang === 'uk' && card.length >= 12;
 
@@ -116,33 +120,45 @@ export default async function handler(req, res) {
     if (stage === 'lead') {
       if (payable) return res.status(200).json({ ok: true, card }); // the buyer now sees the payment step
       // No payment method (or the English version): plain pre-order.
-      await notifyOwner(t, `Нове передзамовлення — ${PRODUCT.brand}`, [`Продукт: ${PRODUCT.title}`, `Ім'я: ${name}`, `Email: ${email}`, `Мова: ${lang}`]);
+      await notifyOwner(t, `Нове передзамовлення — ${PRODUCT.brand}`, [`Продукт: ${PRODUCT.title}`, `Email: ${email}`, `Мова: ${lang}`]);
       await t.sendMail({
         from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
         subject: lang === 'en' ? `We got your order — ${PRODUCT.brand}` : `Заявку прийнято — ${PRODUCT.brand}`,
-        text: lang === 'en' ? `Hi ${name}! Thanks — we will email you about payment and send the files shortly.` : `${name}, дякуємо! Ми напишемо вам на цю адресу щодо оплати і надішлемо файли.`,
+        text: lang === 'en' ? 'Hi! Thanks — we will email you about payment and send the files shortly.' : 'Дякуємо! Ми напишемо вам на цю адресу щодо оплати і надішлемо файли.',
       });
       return res.status(200).json({ ok: true });
     }
 
     if (stage === 'paid') {
       const manual = String(process.env.DELIVERY || 'auto').toLowerCase() === 'manual';
-      const info = [`Продукт: ${PRODUCT.title}`, `Сума: ${PRODUCT.price} грн`, `Ім'я: ${name}`, `Email: ${email}`, `Час: ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' })}`];
+      const info = [`Продукт: ${PRODUCT.title}`, `Сума: ${price()} грн`, `Email: ${email}`, `Час: ${new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' })}`];
       if (manual) {
         const base = `https://${req.headers['x-forwarded-host'] || req.headers.host}`;
         const link = `${base}/api/order?confirm=${makeToken({ name, email })}`;
-        await notifyOwner(t, `💳 Перевір оплату ${PRODUCT.price} грн — ${name}`, [...info, '', 'Перевір надходження на картку і натисни кнопку нижче — покупцю піде лист із файлами.'],
+        await notifyOwner(t, `💳 Перевір оплату ${price()} грн — ${email}`, [...info, '', 'Перевір надходження на картку і натисни кнопку нижче — покупцю піде лист із файлами.'],
           `<p style="margin:18px 0 0"><a href="${link}" style="display:inline-block;background:${PRODUCT.accent};color:#fff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">Підтвердити і надіслати файли</a></p>`);
         await t.sendMail({
           from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
           subject: `Перевіряємо оплату — ${PRODUCT.brand}`,
-          text: `${name}, дякуємо! Перевіряємо оплату ${PRODUCT.price} грн. Щойно вона надійде, на цю адресу прийде лист із файлами.`,
+          text: `${hi(name, 'дякуємо!')} Перевіряємо оплату ${price()} грн. Щойно вона надійде, на цю адресу прийде лист із файлами.`,
         });
         return res.status(200).json({ ok: true, delivered: false });
       }
       await deliver(t, { name, email });
-      await notifyOwner(t, `💳 Продаж ${PRODUCT.price} грн — ${name}`, [...info, '', 'Файли вже надіслано покупцю. Перевір, що гроші надійшли на картку.']);
+      await notifyOwner(t, `💳 Продаж ${price()} грн — ${email}`, [...info, '', 'Файли вже надіслано покупцю. Перевір, що гроші надійшли на картку.']);
       return res.status(200).json({ ok: true, delivered: true });
+    }
+    if (stage === 'gift' && PRODUCT.gift) {
+      await t.sendMail({
+        from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+        subject: `Ваш подарунок: ${PRODUCT.gift.title}`,
+        text: `Тримайте ${PRODUCT.gift.title} — PDF у вкладенні.\n\nСподобається — повний пакет на ${PRODUCT.title.replace(/^Повний пакет: /, '')} тут: https://${PRODUCT.site}/#recap`,
+        html: letter(`Ваш подарунок: ${PRODUCT.gift.title}`,
+          `<p style="margin:0 0 14px;font-size:15px;line-height:1.55">PDF — у вкладенні. Почніть зі сторінки «5 правил»: це 2 хвилини.</p>
+           <p style="margin:0;font-size:15px;line-height:1.55">Сподобається — у <a href="https://${PRODUCT.site}/#recap" style="color:${PRODUCT.accent}">повному пакеті</a> 250 промптів у 12 категоріях, 3 Claude-проєкти і гайд «Сайт за вечір».</p>`),
+        attachments: [{ filename: PRODUCT.gift.name, content: decrypt(PRODUCT.gift.enc) }],
+      });
+      return res.status(200).json({ ok: true });
     }
     return res.status(400).json({ ok: false });
   } catch (e) {
