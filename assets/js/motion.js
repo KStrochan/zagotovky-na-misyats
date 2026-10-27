@@ -24,7 +24,7 @@ function splitWords(el) {
     });
   };
   walk(el);
-  el.querySelectorAll('.wi').forEach((w, k) => w.style.setProperty('--d', `${120 + k * 70}ms`));
+  el.querySelectorAll('.wi').forEach((w, k) => w.style.setProperty('--d', `${350 + k * 85}ms`));
 }
 
 // ---------- counters ----------
@@ -162,8 +162,48 @@ function buyBar() {
   new IntersectionObserver(([e]) => { orderSeen = e.isIntersecting; update(); }, { threshold: 0.05 }).observe(order);
 }
 
+// ---------- hero: looping background video ----------
+function heroVideo() {
+  const v = document.querySelector('.hero-media video');
+  if (!v) return;
+  if (reduced) { v.remove(); return; } // the poster frame stays
+  v.addEventListener('playing', () => v.classList.add('on'), { once: true });
+  v.play().catch(() => {});
+}
+
+// ---------- hero: one word at a time under the headline ----------
+function rotWords() {
+  const el = document.querySelector('.hero .rot');
+  if (!el) return;
+  const list = () => ((document.documentElement.lang === 'en' && el.dataset.wordsEn) || el.dataset.words).split('|');
+  let spans = [], i = 0, lang = null;
+  const build = () => {
+    lang = document.documentElement.lang;
+    const words = list();
+    if (reduced) { el.textContent = words.join(' '); return; }
+    el.textContent = '';
+    const sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = words.join(' ');
+    el.append(sr);
+    spans = words.map((w) => { const s = document.createElement('span'); s.textContent = w; s.setAttribute('aria-hidden', 'true'); el.append(s); return s; });
+    i = 0; spans[0].classList.add('on');
+  };
+  build();
+  new MutationObserver(() => { if (document.documentElement.lang !== lang) build(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  if (reduced) return;
+  setInterval(() => {
+    if (!spans.length) return;
+    const prev = spans[i];
+    prev.classList.remove('on'); prev.classList.add('out');
+    i = (i + 1) % spans.length;
+    spans[i].classList.remove('out'); spans[i].classList.add('on');
+    setTimeout(() => prev.classList.remove('out'), 260);
+  }, 2200);
+}
+
 // ---------- boot ----------
 root.classList.add('motion');
+heroVideo();
+rotWords();
 if (!reduced) {
   const h1 = document.querySelector('.hero h1');
   if (h1) splitWords(h1);
