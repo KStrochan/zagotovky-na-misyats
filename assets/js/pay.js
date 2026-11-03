@@ -59,3 +59,41 @@ export async function checkout(form, o) {
   form.scrollIntoView({ block: 'center', behavior: 'smooth' });
   return 'pay';
 }
+
+// ---------- Lemon Squeezy checkout (card, Apple Pay, Google Pay) ----------
+// The checkout URL is set once in <body data-ls-checkout="https://….lemonsqueezy.com/buy/…">.
+// The file is delivered by Lemon Squeezy right after payment (on the confirmation screen and by email).
+export const lemonUrl = () => document.body.dataset.lsCheckout || '';
+
+let lemonReady;
+function loadLemon() {
+  lemonReady = lemonReady || new Promise((resolve) => {
+    const s = document.createElement('script');
+    s.src = 'https://app.lemonsqueezy.com/js/lemon.js';
+    s.defer = true;
+    s.onload = () => { try { window.createLemonSqueezy && window.createLemonSqueezy(); } catch (e) {} resolve(!!window.LemonSqueezy); };
+    s.onerror = () => resolve(false);
+    document.head.append(s);
+    setTimeout(() => resolve(!!window.LemonSqueezy), 6000);
+  });
+  return lemonReady;
+}
+if (lemonUrl()) loadLemon();
+
+/**
+ * Opens the Lemon Squeezy checkout over the page (falls back to a normal page if lemon.js is blocked).
+ * @param {object} o  { email, site, onSuccess }
+ */
+export async function lemonCheckout(o) {
+  const u = new URL(lemonUrl());
+  if (o.email) u.searchParams.set('checkout[email]', o.email);
+  if (o.site) u.searchParams.set('checkout[custom][site]', o.site);
+  const ok = await loadLemon();
+  if (ok && window.LemonSqueezy && window.LemonSqueezy.Url) {
+    window.LemonSqueezy.Setup({ eventHandler: (ev) => { if (ev && ev.event === 'Checkout.Success' && o.onSuccess) o.onSuccess(); } });
+    u.searchParams.set('embed', '1');
+    window.LemonSqueezy.Url.Open(u.toString());
+  } else {
+    location.href = u.toString();
+  }
+}
