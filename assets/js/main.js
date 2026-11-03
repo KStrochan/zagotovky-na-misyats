@@ -1,5 +1,5 @@
-import { checkout } from './pay.js?v=20261103a';
-import { startPromo, price } from './promo.js?v=20261103a';
+import { checkout } from './pay.js?v=20261103b';
+import { startPromo, price } from './promo.js?v=20261103b';
 
 startPromo();
 

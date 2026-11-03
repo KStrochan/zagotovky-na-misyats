@@ -22,7 +22,7 @@
 <link rel="preload" href="/fonts/playfair-display-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/nunito-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/caveat-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=20261103a">
+<link rel="stylesheet" href="assets/css/site.css?v=20261103b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -63,11 +63,13 @@
       <h1>Вечеря за 20 хвилин. Щодня, цілий місяць</h1>
       <div class="cap-row">
         <p>Гайд «Морозилка на місяць». Чотири вихідні готуєте по 5 заготовок — і морозилка повна. У будні лише дістаєте й розігріваєте.</p>
-        <div class="buy"><span class="price" data-p>299 грн</span><a class="btn" href="#order">Отримати гайд</a></div>
+        <div class="buy"><span class="price" data-p>299 грн</span><a class="btn" href="#order" data-mag>Отримати гайд</a></div>
       </div>
       <ul class="facts"><li>PDF на пошту одразу після оплати</li><li>20 рецептів і 4 списки покупок</li><li>Для сім'ї з 3–4 людей</li></ul>
     </div>
   </section>
+
+  <div class="strip" aria-hidden="true"><p><span>Котлети &nbsp;·&nbsp; Вареники &nbsp;·&nbsp; Голубці &nbsp;·&nbsp; Лазанья &nbsp;·&nbsp; Сирники &nbsp;·&nbsp; Болоньєзе &nbsp;·&nbsp; Борщова заправка &nbsp;·&nbsp; Млинці &nbsp;·&nbsp; </span><span>Котлети &nbsp;·&nbsp; Вареники &nbsp;·&nbsp; Голубці &nbsp;·&nbsp; Лазанья &nbsp;·&nbsp; Сирники &nbsp;·&nbsp; Болоньєзе &nbsp;·&nbsp; Борщова заправка &nbsp;·&nbsp; Млинці &nbsp;·&nbsp; </span></p></div>
 
   <section class="scene" id="weekends">
     <div class="stage">
@@ -116,6 +118,22 @@
     </div>
   </section>
 
+  <section class="shelf">
+    <div class="wrap"><h2 class="title">Так виглядає вечеря, коли все вже готове</h2></div>
+    <div class="shelf-view" tabindex="0" role="group" aria-label="Страви із заготовок">
+      <div class="shelf-row" data-drift>
+        <figure class="shelf-item mr" data-tilt><video muted loop playsinline preload="none" poster="assets/media/dough.webp" data-src="assets/media/dough.mp4" aria-hidden="true"></video><figcaption class="tape">Тісто</figcaption></figure>
+        <figure class="shelf-item mr" data-tilt><img src="assets/media/varenyky.webp" alt="Тарілка вареників" loading="lazy" decoding="async"><figcaption class="tape">Вареники</figcaption></figure>
+        <figure class="shelf-item mr" data-tilt><img src="assets/media/bolognese.webp" alt="Спагеті з соусом болоньєзе" loading="lazy" decoding="async"><figcaption class="tape">Болоньєзе</figcaption></figure>
+        <figure class="shelf-item mr" data-tilt><video muted loop playsinline preload="none" poster="assets/media/tomato.webp" data-src="assets/media/tomato.mp4" aria-hidden="true"></video><figcaption class="tape">Соус</figcaption></figure>
+        <figure class="shelf-item mr" data-tilt><img src="assets/media/borscht.webp" alt="Миска борщу з хлібом" loading="lazy" decoding="async"><figcaption class="tape">Борщ</figcaption></figure>
+        <figure class="shelf-item mr" data-tilt><img src="assets/media/lasagna.webp" alt="Запечена лазанья із сиром" loading="lazy" decoding="async"><figcaption class="tape">Лазанья</figcaption></figure>
+        <figure class="shelf-item mr" data-tilt><img src="assets/media/syrniki.webp" alt="Тарілка сирників із соусом" loading="lazy" decoding="async"><figcaption class="tape">Сирники</figcaption></figure>
+        <figure class="shelf-item mr" data-tilt><img src="assets/media/marinade.webp" alt="Мариноване м’ясо перед запіканням" loading="lazy" decoding="async"><figcaption class="tape">Маринад</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
   <section class="tonight on-ice" id="tonight">
     <div class="wrap">
       <h2 class="title">Що сьогодні на вечерю?</h2>
@@ -130,6 +148,7 @@
           <button class="pick" type="button" aria-pressed="false" data-how="М'ясо маринується, поки розморожується. Вам лишається тільки приготувати.">Маринад</button>
         </div>
         <div class="dinner" aria-live="polite">
+          <img class="dinner-bg on" src="assets/media/../hero/poster.webp" alt="" loading="lazy" decoding="async"><img class="dinner-bg" src="assets/media/varenyky.webp" alt="" loading="lazy" decoding="async"><img class="dinner-bg" src="assets/media/bolognese.webp" alt="" loading="lazy" decoding="async"><img class="dinner-bg" src="assets/media/lasagna.webp" alt="" loading="lazy" decoding="async"><img class="dinner-bg" src="assets/media/syrniki.webp" alt="" loading="lazy" decoding="async"><img class="dinner-bg" src="assets/media/marinade.webp" alt="" loading="lazy" decoding="async">
           <div><p class="dinner-name">Котлети</p><p class="dinner-how">Заморожуються сирими і готуються одразу з морозилки, без розморожування. На сковороду — і все.</p></div>
           <div class="dinner-time">
             <svg viewBox="0 0 40 40" aria-hidden="true"><circle class="bg" cx="20" cy="20" r="15.9"/><circle class="fg" cx="20" cy="20" r="15.9" pathLength="100"/></svg>
@@ -223,20 +242,32 @@
   </section>
 
   <section class="final" id="final">
-    <div class="wrap">
-      <h2>Одні вихідні — і тиждень вечерь уже в морозилці</h2>
-      <p>Почніть з першого списку покупок у цю суботу.</p>
-      <a class="btn" href="#order" data-p>Хочу гайд за 299 грн</a>
+    <div class="wrap final-grid">
+      <div>
+        <h2>Одні вихідні — і тиждень вечерь уже в морозилці</h2>
+        <p>Почніть з першого списку покупок у цю суботу.</p>
+        <a class="btn" href="#order" data-mag data-p>Хочу гайд за 299 грн</a>
+      </div>
+      <figure class="final-clip mr" data-tilt><video muted loop playsinline preload="none" poster="assets/media/soup.webp" data-src="assets/media/soup.mp4" aria-hidden="true"></video><figcaption class="tape">Вечеря за 20 хвилин</figcaption></figure>
     </div>
   </section>
 </main>
 
 <footer>
   <p class="wordmark" aria-hidden="true">Заготовки на місяць</p>
+  <details class="credits wrap"><summary>Авторство фото і відео</summary><p>Фото і відео ілюструють страви, це не кадри з гайду. Розмір фото змінено.
+    <a href="https://commons.wikimedia.org/wiki/File:Varenyky_with_Potatoes_-_2026_-01.jpg" rel="noopener">Вареники</a>: DemieK07, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener">CC BY-SA 4.0</a>.
+    <a href="https://commons.wikimedia.org/w/index.php?curid=115373118" rel="noopener">Болоньєзе</a>: Benoît Prieur, CC0.
+    <a href="https://commons.wikimedia.org/wiki/File:Borscht,_Rostov-on-Don,_Russia.jpg" rel="noopener">Борщ</a>: Vyacheslav Argenberg, <a href="https://creativecommons.org/licenses/by/4.0" rel="noopener">CC BY 4.0</a>.
+    <a href="https://commons.wikimedia.org/wiki/File:Lasagna_Bolognese_(28840811363).jpg" rel="noopener">Лазанья</a>: HarshLight, <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener">CC BY 2.0</a>.
+    <a href="https://commons.wikimedia.org/wiki/File:Syrniki6.jpg" rel="noopener">Сирники</a>: Tatyana Morozyuk, обробка кольору Off-shell, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="noopener">CC BY-SA 3.0</a>.
+    <a href="https://commons.wikimedia.org/wiki/File:Marinated_chicken_Kerala.jpg" rel="noopener">Маринад</a>: Dr. Chinchu C., <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener">CC BY-SA 4.0</a>.
+    Відео: <a href="https://mixkit.co/" rel="noopener">Mixkit</a>.</p></details>
   <div class="wrap legal"><span>© 2026 Заготовки на місяць</span><span><a href="privacy.html">Політика конфіденційності</a> · Оплата через EasyPay</span></div>
 </footer>
 
-<script type="module" src="assets/js/main.js?v=20261103a"></script>
-<script type="module" src="assets/js/motion.js?v=20261103a"></script>
+<script type="module" src="assets/js/main.js?v=20261103b"></script>
+<script type="module" src="assets/js/motion.js?v=20261103b"></script>
+<script type="module" src="assets/js/live.js?v=20261103b"></script>
 </body>
 </html>

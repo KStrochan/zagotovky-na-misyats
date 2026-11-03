@@ -2,7 +2,7 @@
 // fills on scroll, the «what's for dinner» picker, word-by-word headings and the phone buy bar.
 // Only opacity/transform/filter are animated. Without this file, or with prefers-reduced-motion,
 // the page shows the full freezer and every weekend as plain content.
-import { price } from './promo.js?v=20261103a';
+import { price } from './promo.js?v=20261103b';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const root = document.documentElement;
@@ -160,9 +160,10 @@ function dinner() {
   const box = document.getElementById('tonight');
   if (!box) return;
   const name = box.querySelector('.dinner-name'), how = box.querySelector('.dinner-how'), card = box.querySelector('.dinner');
-  const picks = [...box.querySelectorAll('.pick')];
-  picks.forEach((b) => b.addEventListener('click', () => {
+  const picks = [...box.querySelectorAll('.pick')], bgs = [...box.querySelectorAll('.dinner-bg')];
+  picks.forEach((b, i) => b.addEventListener('click', () => {
     picks.forEach((o) => o.setAttribute('aria-pressed', o === b));
+    bgs.forEach((im, k) => im.classList.toggle('on', k === i));
     name.textContent = b.textContent;
     how.textContent = b.dataset.how;
     if (reduced) return;
