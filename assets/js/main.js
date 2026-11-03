@@ -1,11 +1,11 @@
-import { checkout } from './pay.js?v=20261027a';
-import { startPromo, price } from './promo.js?v=20261027a';
+import { checkout } from './pay.js?v=20261103a';
+import { startPromo, price } from './promo.js?v=20261103a';
 
 startPromo();
 
-const hero = document.getElementById('hero');
+// Header turns solid as soon as the page moves, so it never sits on top of the content.
 const header = document.querySelector('.site-header');
-const onScroll = () => header.classList.toggle('solid', hero.getBoundingClientRect().bottom < 80);
+const onScroll = () => header.classList.toggle('solid', scrollY > 24);
 addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
